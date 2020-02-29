@@ -35,15 +35,15 @@ This repository regroups the work of Théo Chennebault ([@ErnestBidouille](https
    - Tests
 
 ### Delivery 4 :
-  Creation of the CSV format file reading system : 
-   - Classes
-   - Reading CSV functions
-   - Tests
-
-### Delivery 5 :
   Creation of the JSON format file reading system : 
    - Classes
    - Reading JSON functions
+   - Tests
+
+### Delivery 5 :
+  Creation of the CSV format file reading system : 
+   - Classes
+   - Reading CSV functions
    - Tests
 
 ### Delivery 6 :
