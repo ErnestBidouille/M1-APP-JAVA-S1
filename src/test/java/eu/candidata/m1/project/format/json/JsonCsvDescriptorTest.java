@@ -18,7 +18,7 @@ class JsonCsvDescriptorTest {
     void testHeader() throws ParseException, IOException {
         JsonCsvDescriptor descriptor = new JsonCsvDescriptor(okFile);
         String[] expectedHeader = new String[] { "NOM", "AGE", "DATE_DE_NAISSANCE", "EMAIL_PRO", "EMAIL_PERSO" };
-        assertArrayEquals(expectedHeader, descriptor.getHeaders());
+        assertArrayEquals(expectedHeader, descriptor.getHeaders().toArray(new String[0]));
     }
 
     @Test

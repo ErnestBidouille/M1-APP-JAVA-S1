@@ -22,7 +22,6 @@ public class JsonCsvDescriptor {
     private List<Pair<String, DataType>> listColumns = new LinkedList<>();
 
     private enum DataType {
-
         STRING(ValidationRules.IS_STRING),
         INT(ValidationRules.IS_INTEGER),
         DOUBLE(ValidationRules.IS_DOUBLE);
@@ -74,20 +73,21 @@ public class JsonCsvDescriptor {
     }
 
     public boolean validateRecordColumns(CSVRecord record) {
-        System.out.println(record);
         for (Pair<String, DataType> pair : listColumns) {
-            if (!pair.getValue().rule.test(record.get(pair.getKey()))) {
-                return false;
-            }
+            try {
+                if (!pair.getValue().rule.test(record.get(pair.getKey()))) {
+                    return false;
+                }
+            } catch (IllegalArgumentException e) {}
         }
         return true;
     }
 
-    public String[] getHeaders() {
+    public List<String> getHeaders() {
         List<String> tmpListStrings = new LinkedList<>();
         for (Pair<String, DataType> pair : listColumns) {
             tmpListStrings.add(pair.getKey());
         }
-        return tmpListStrings.toArray(new String[0]);
+        return tmpListStrings;
     }
 }
