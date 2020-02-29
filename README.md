@@ -1,5 +1,7 @@
 # M1-APP-JAVA-S1
 
+![Travis CI](https://travis-ci.com/ErnestBidouille/M1-APP-JAVA-S1.svg?branch=dev)
+
 A Java project developed during the Java course taught at Université Paris-Dauphine (in MIDO M1 MIAGE APP).
 
 The code is hereby published under the MIT License..
