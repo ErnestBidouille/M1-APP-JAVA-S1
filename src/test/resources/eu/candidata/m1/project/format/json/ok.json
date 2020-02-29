@@ -1,0 +1,14 @@
+[
+	{
+		"name": "Test",
+		"dataType": "datatypeTest",
+		"should": "ShouldTest",
+		"changeTo": "changeToTest"
+	},
+	{
+		"name": "Test2",
+		"dataType": "datatypeTest2",
+		"should": "ShouldTest2",
+		"changeTo": "changeToTest2"
+	}
+]
