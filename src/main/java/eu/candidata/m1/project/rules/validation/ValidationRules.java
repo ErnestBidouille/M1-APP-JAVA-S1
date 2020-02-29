@@ -1,5 +1,10 @@
 package eu.candidata.m1.project.rules.validation;
 
+/**
+ * 
+ * @author ernestbidouille
+ *
+ */
 public class ValidationRules {
 
     public static final TypeRule<Integer> IS_INTEGER = new IntegerRule();
