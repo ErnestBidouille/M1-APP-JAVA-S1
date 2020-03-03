@@ -13,13 +13,12 @@ import org.junit.jupiter.api.Test;
 
 class JsonReaderTest {
 
-    private static File okFile = new File(JsonReaderTest.class.getResource("ok.json").getFile());
-    private static File badFile = new File(JsonReaderTest.class.getResource("bad.json").getFile());
-
     @Test
     void test() throws ParseException, IOException {
+        File file = new File(String.valueOf(JsonReaderTest.class
+                .getResource("ok.json").getFile()));
         JSONArray jsonReader = null;
-        jsonReader = JsonReader.parseJsonFile(okFile);
+        jsonReader = JsonReader.parseJsonFile(file);
         assertEquals(2, jsonReader.toArray().length);
         assertEquals(
                 "[{\"dataType\":\"datatypeTest\",\"name\":\"Test\",\"should\":\"ShouldTest\",\"changeTo\":\"changeToTest\"},{\"dataType\":\"datatypeTest2\",\"name\":\"Test2\",\"should\":\"ShouldTest2\",\"changeTo\":\"changeToTest2\"}]",
@@ -34,6 +33,7 @@ class JsonReaderTest {
 
     @Test
     void testParsingFailException() {
-        assertThrows(ParseException.class, () -> JsonReader.parseJsonFile(badFile));
+        File file = new File(String.valueOf(JsonReaderTest.class.getResource("bad.json").getFile()));
+        assertThrows(ParseException.class, () -> JsonReader.parseJsonFile(file));
     }
 }
