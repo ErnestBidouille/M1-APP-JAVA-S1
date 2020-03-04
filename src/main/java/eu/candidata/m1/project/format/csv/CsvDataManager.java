@@ -109,7 +109,7 @@ public class CsvDataManager implements Closeable, AutoCloseable {
             csvParser.forEach(record -> {
                 if (jsonDataDescriptor.validateRecordColumns(record)) {
                     try {
-                        csvWritter.write(jsonDataAnonymizer.anonRecordColumns(record));
+                        csvWritter.write(jsonDataAnonymizer.anonymizeRecordColumns(record));
                     } catch (IOException e) {
                         LOGGER.error("Can't write line", e);
                     }
@@ -140,7 +140,7 @@ public class CsvDataManager implements Closeable, AutoCloseable {
                 if (jsonDataDescriptor.validateRecordColumns(record)
                         && jsonDataValidator.validateRecordColumns(record)) {
                     try {
-                        csvWritter.write(jsonDataAnonymizer.anonRecordColumns(record));
+                        csvWritter.write(jsonDataAnonymizer.anonymizeRecordColumns(record));
                     } catch (IOException e) {
                         LOGGER.error("Can't write line", e);
                     }

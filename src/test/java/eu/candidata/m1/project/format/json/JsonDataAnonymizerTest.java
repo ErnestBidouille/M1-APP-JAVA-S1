@@ -56,7 +56,7 @@ class JsonDataAnonymizerTest {
     void testAnon() throws ParseException, IOException {
         JsonDataAnonymizer jsonDataAnonymizer = new JsonDataAnonymizer(okFile);
         for (CSVRecord csvRecord : toTestCsvDataManager.getCsvParser()) {
-            List<String> tooTest = jsonDataAnonymizer.anonRecordColumns(csvRecord);
+            List<String> tooTest = jsonDataAnonymizer.anonymizeRecordColumns(csvRecord);
             assertEquals(2, tooTest.size());
             assertEquals(3, tooTest.get(0).length());
             assertNotEquals(csvRecord.get("EMAIL_PRO"), tooTest.get(1));

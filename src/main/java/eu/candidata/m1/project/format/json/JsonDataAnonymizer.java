@@ -37,7 +37,7 @@ public class JsonDataAnonymizer {
     @SuppressWarnings("unchecked")
     public JsonDataAnonymizer(File file) throws ParseException, IOException {
         JSONArray jsonArray = JsonReader.parseJsonFile(file);
-        jsonArray.forEach(column -> addAnonRuleToGivenColumn((JSONObject) column));
+        jsonArray.forEach(column -> addColumnAnonymizationRule((JSONObject) column));
     }
 
     /**
@@ -47,7 +47,7 @@ public class JsonDataAnonymizer {
      * 
      * @param columnRule
      */
-    private void addAnonRuleToGivenColumn(JSONObject columnRule) {
+    private void addColumnAnonymizationRule(JSONObject columnRule) {
         String nameVal;
         if ((nameVal = (String) columnRule.get("name")) != null) {
             String changeTo;
@@ -72,7 +72,7 @@ public class JsonDataAnonymizer {
      * @param record to anonymize
      * @return List of Strings of anonymized columns
      */
-    public List<String> anonRecordColumns(CSVRecord record) {
+    public List<String> anonymizeRecordColumns(CSVRecord record) {
         List<String> anonymizedColumns = new LinkedList<>();
         mapAnonymizerRules.forEach((k, v) -> anonymizedColumns.add(v.anonymizer.apply(record.get(k))));
         return anonymizedColumns;
