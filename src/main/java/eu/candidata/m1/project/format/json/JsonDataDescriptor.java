@@ -13,15 +13,17 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
+
 import eu.candidata.m1.project.rules.validation.Rule;
 import eu.candidata.m1.project.rules.validation.ValidationRules;
 
-public class JsonCsvDescriptor {
+public class JsonDataDescriptor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonCsvDescriptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonDataDescriptor.class);
     private List<Pair<String, DataType>> listColumns = new LinkedList<>();
 
-    private enum DataType {
+    public enum DataType {
         STRING(ValidationRules.IS_STRING),
         INT(ValidationRules.IS_INTEGER),
         DOUBLE(ValidationRules.IS_DOUBLE);
@@ -33,25 +35,22 @@ public class JsonCsvDescriptor {
         }
     }
 
-    public JsonCsvDescriptor(File file) throws ParseException, IOException {
+    @SuppressWarnings("unchecked")
+    public JsonDataDescriptor(File file) throws ParseException, IOException {
+        Preconditions.checkNotNull(file, "File can't be null");
         JSONArray jsonArray = JsonReader.parseJsonFile(file);
-        for (Object column : jsonArray) {
-            try {
-                checkValidFormat((JSONObject) column);
-            } catch (Exception e) {
-                LOGGER.warn(e.getMessage());
-            }
-        }
+        jsonArray.forEach(column -> addDescriptionRuleToGivenColumn((JSONObject) column));
     }
 
     /**
-     * Check if column is in valid format and add id to the columns Map. Value is
-     * ignored if dataType isn't in right format or object havn't "name" or
-     * "dataType" fields
+     * Adds an descriptor rule to the given column. Check if column is in valid
+     * format and add id to the columns/rule Pair list. Value is ignored if dataType
+     * isn't in right format or object havn't "name" or "dataType" fields
      * 
-     * @param column
+     * @param column <code>not null</code>
      */
-    private void checkValidFormat(JSONObject column) throws IllegalArgumentException {
+    private void addDescriptionRuleToGivenColumn(JSONObject column) {
+        Preconditions.checkNotNull(column, "Column can't be null");
         String nameVal;
         if ((nameVal = (String) column.get("name")) != null) {
             String dataType = (String) column.get("dataType");
@@ -60,18 +59,22 @@ public class JsonCsvDescriptor {
                     DataType dataTypeColumn = DataType.valueOf(dataType);
                     listColumns.add(Pair.of(nameVal, dataTypeColumn));
                 } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException(String.format(
-                            "dataType field bad format (%s) for name %s, description ignored", dataType, nameVal), e);
+                    LOGGER.warn("dataType field bad format ({}) for name {}, description ignored", dataType, nameVal);
                 }
             } else {
-                throw new IllegalArgumentException(
-                        String.format("dataType field not found for name %s, description ignored", nameVal));
+                LOGGER.warn("dataType field not found for name {}, description ignored", nameVal);
             }
         } else {
-            throw new IllegalArgumentException("name field not found, description ignored");
+            LOGGER.warn("name field not found, description ignored");
         }
     }
 
+    /**
+     * Validate given CSVRecord
+     * 
+     * @param record to validate
+     * @return <code>true</code> if column is valid <code>false</code> otherwise
+     */
     public boolean validateRecordColumns(CSVRecord record) {
         for (Pair<String, DataType> pair : listColumns) {
             try {
@@ -83,11 +86,20 @@ public class JsonCsvDescriptor {
         return true;
     }
 
+    /**
+     * Return all JsonDataDescriptor potential CSV headers
+     * 
+     * @return String list of headers
+     */
     public List<String> getHeaders() {
         List<String> tmpListStrings = new LinkedList<>();
         for (Pair<String, DataType> pair : listColumns) {
             tmpListStrings.add(pair.getKey());
         }
         return tmpListStrings;
+    }
+
+    public List<Pair<String, DataType>> getListColumns() {
+        return listColumns;
     }
 }

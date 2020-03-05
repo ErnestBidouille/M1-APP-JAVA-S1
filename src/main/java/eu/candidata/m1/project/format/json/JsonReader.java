@@ -11,6 +11,8 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
+
 public class JsonReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonReader.class);
@@ -21,12 +23,13 @@ public class JsonReader {
     /**
      * Return JSONArray from given file
      * 
-     * @param file
+     * @param file <code>not null</code>
      * @return JSONArray
      * @throws ParseException
      * @throws IOException
      */
     public static JSONArray parseJsonFile(File file) throws ParseException, IOException {
+        Preconditions.checkNotNull(file, "File can't be null");
         try (FileReader fr = new FileReader(file)) {
             return parsedFile(fr);
         } catch (FileNotFoundException e) {
@@ -44,6 +47,7 @@ public class JsonReader {
      * @throws ParseException
      */
     private static JSONArray parsedFile(FileReader fr) throws IOException, ParseException {
+        Preconditions.checkNotNull(fr, "FileReader can't be null");
         JSONParser jsonParser = new JSONParser();
         try {
             return (JSONArray) jsonParser.parse(fr);
