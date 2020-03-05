@@ -42,14 +42,14 @@ public class Main {
             String input = "";
             while (true) {
                 input = s.next();
-                if ("yes".equals(input) || "yes".equals(input)) {
+                if ("yes".equals(input) || "no".equals(input)) {
                     break;
                 }
                 System.out.println("You must provide value between yes or no");
             }
             Reader reader = new FileReader(args[0]);
             try (
-                    CsvDataManager csvDataManager = (input.equals("yes"))
+                    CsvDataManager csvDataManager = ("yes".equals(input))
                             ? CsvDataManager.getCsvReaderWithCsvHeaders(reader, jsonDataDescriptor)
                             : CsvDataManager.getCsvReaderWithOutCsvHeaders(reader, jsonDataDescriptor);) {
                 if (inputInteger == 1) {
