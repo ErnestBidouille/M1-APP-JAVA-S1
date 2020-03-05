@@ -42,7 +42,7 @@ public class Main {
             String input = "";
             while (true) {
                 input = s.next();
-                if (input.equals("yes") || input.equals("no")) {
+                if ("yes".equals(input) || "yes".equals(input)) {
                     break;
                 }
                 System.out.println("You must provide value between yes or no");
