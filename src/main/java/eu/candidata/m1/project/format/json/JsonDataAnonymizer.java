@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import eu.candidata.m1.project.rules.anonymization.Anonymizer;
 import eu.candidata.m1.project.rules.anonymization.RandomLetterAnonymizer;
 import eu.candidata.m1.project.rules.anonymization.RandomLocalPartLetterEmailAnonymizer;
+import eu.candidata.m1.project.rules.anonymization.RandomLocalPartLetterEmailAnonymizer.IllegalArgumentEmailException;
 
 public class JsonDataAnonymizer {
 
@@ -77,6 +78,8 @@ public class JsonDataAnonymizer {
         mapAnonymizerRules.forEach((k, v) -> {
             try {
                 anonymizedColumns.add(v.anonymizer.apply(record.get(k)));
+            } catch (IllegalArgumentEmailException e) {
+                anonymizedColumns.add("[ERROR] Not an email");
             } catch (IllegalArgumentException e) {}
         });
         return anonymizedColumns;
