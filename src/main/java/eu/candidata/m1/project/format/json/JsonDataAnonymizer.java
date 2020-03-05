@@ -74,7 +74,11 @@ public class JsonDataAnonymizer {
      */
     public List<String> anonymizeRecordColumns(CSVRecord record) {
         List<String> anonymizedColumns = new LinkedList<>();
-        mapAnonymizerRules.forEach((k, v) -> anonymizedColumns.add(v.anonymizer.apply(record.get(k))));
+        mapAnonymizerRules.forEach((k, v) -> {
+            try {
+                anonymizedColumns.add(v.anonymizer.apply(record.get(k)));
+            } catch (IllegalArgumentException e) {}
+        });
         return anonymizedColumns;
     }
 
