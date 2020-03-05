@@ -37,9 +37,10 @@ public class CsvDataManager implements Closeable, AutoCloseable {
             throws IOException {
         Preconditions.checkNotNull(reader, "Reader can't be null");
         Preconditions.checkNotNull(jsonDataDescriptor, "JsonDataDescriptor can't be null");
+        final String[] headers = jsonDataDescriptor.getHeaders().toArray(new String[0]);
         return new CsvDataManager(
                 new CSVParser(reader,
-                        CSVFormat.DEFAULT.withHeader(jsonDataDescriptor.getHeaders().toArray(new String[0]))),
+                        CSVFormat.DEFAULT.withHeader(headers)),
                 jsonDataDescriptor);
     }
 
@@ -108,7 +109,7 @@ public class CsvDataManager implements Closeable, AutoCloseable {
             csvParser.forEach(record -> {
                 if (jsonDataDescriptor.validateRecordColumns(record)) {
                     try {
-                        csvWritter.write(jsonDataAnonymizer.anonRecordColumns(record));
+                        csvWritter.write(jsonDataAnonymizer.anonymizeRecordColumns(record));
                     } catch (IOException e) {
                         LOGGER.error("Can't write line", e);
                     }
@@ -139,7 +140,7 @@ public class CsvDataManager implements Closeable, AutoCloseable {
                 if (jsonDataDescriptor.validateRecordColumns(record)
                         && jsonDataValidator.validateRecordColumns(record)) {
                     try {
-                        csvWritter.write(jsonDataAnonymizer.anonRecordColumns(record));
+                        csvWritter.write(jsonDataAnonymizer.anonymizeRecordColumns(record));
                     } catch (IOException e) {
                         LOGGER.error("Can't write line", e);
                     }
